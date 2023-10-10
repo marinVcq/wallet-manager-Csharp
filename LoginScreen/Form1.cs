@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Data.SqlClient;
 using System.Windows.Forms;
@@ -37,10 +38,17 @@ namespace LoginScreen
             }
             else
             {
-                if (CheckCredentials(username, password))
-                {
-                    new Form2().Show();
-                    this.Hide();
+                int userId = CheckCredentials(username, password))
+                
+                if (userId != -1){
+                    // Authentication successful
+                    currentUserId = userId;
+
+                    // Open the main form or any other form in your application
+                    Form2 mainForm = new Form2(currentUserId);
+                    mainForm.Show();
+
+                    this.Hide();  // Hide the login form
                 }
                 else
                 {
