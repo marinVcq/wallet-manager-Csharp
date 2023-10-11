@@ -38,7 +38,7 @@ namespace LoginScreen
             comboBoxType.Text = expenseType ?? string.Empty;
             txtLabel.Text = label ?? string.Empty;
             txtAmount.Text = amount.ToString();
-            txtDate.Text = expenseDate.ToString();
+            txtDate.Text = expenseDate.ToString("dd/MM/yyyy");
         }
 
         private void ModifyExpense_Load(object sender, EventArgs e)

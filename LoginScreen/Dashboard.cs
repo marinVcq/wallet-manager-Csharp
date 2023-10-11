@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Globalization;
 using System.Data.SqlClient;
 using System.Data.Common;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace LoginScreen
 {

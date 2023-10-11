@@ -25,3 +25,4 @@ C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\LoginScreen.csproj.Co
 C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\LoginScreen.Dashboard.resources
 C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\LoginScreen.Login.resources
 C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\LoginScreen.ModifyExpense.resources
+C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\LoginScreen.csproj.ResolveComReference.cache
