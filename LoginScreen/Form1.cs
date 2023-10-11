@@ -7,7 +7,7 @@ namespace LoginScreen
 {
     public partial class Form1 : Form
     {
-
+        private int currentUserId = -1;
         private const string ConnectionString = "Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True";
 
         public Form1()
@@ -38,7 +38,7 @@ namespace LoginScreen
             }
             else
             {
-                int userId = CheckCredentials(username, password))
+                int userId = AuthenticateUser(username, password);
                 
                 if (userId != -1){
                     // Authentication successful
@@ -61,24 +61,35 @@ namespace LoginScreen
         }
 
         // Check credentials method
-        private bool CheckCredentials(string username, string password)
+        private int AuthenticateUser(string username, string password)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
 
-                string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username AND Password = @Password";
+                string query = "SELECT UserID FROM Users WHERE Username = @Username AND Password = @Password";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Username", username);
-                    command.Parameters.AddWithValue("@Password", password);
+                    command.Parameters.AddWithValue("@Password", password); // Note: In a real application, use hashed passwords
 
-                    int count = (int)command.ExecuteScalar();
+                    // ExecuteScalar returns the first column of the first row in the result set
+                    object result = command.ExecuteScalar();
 
-                    return count > 0;
+                    if (result != null)
+                    {
+                        // User authenticated successfully; return the UserID
+                        return Convert.ToInt32(result);
+                    }
+                    else
+                    {
+                        // Authentication failed
+                        return -1;
+                    }
                 }
             }
         }
+
     }
 }

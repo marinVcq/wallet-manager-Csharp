@@ -143,9 +143,29 @@ namespace LoginScreen.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap juicy_project_management1 {
+            get {
+                object obj = ResourceManager.GetObject("juicy-project-management1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap logo {
             get {
                 object obj = ResourceManager.GetObject("logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap techny_business_model_and_income_growth {
+            get {
+                object obj = ResourceManager.GetObject("techny-business-model-and-income-growth", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
