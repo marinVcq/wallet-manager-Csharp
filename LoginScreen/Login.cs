@@ -39,8 +39,9 @@ namespace LoginScreen
             else
             {
                 int userId = AuthenticateUser(username, password);
-                
-                if (userId != -1){
+
+                if (userId != -1)
+                {
                     // Authentication successful
                     currentUserId = userId;
 

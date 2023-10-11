@@ -163,6 +163,16 @@ namespace LoginScreen.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap network_expenses_and_income_monitoring_on_diagrams {
+            get {
+                object obj = ResourceManager.GetObject("network-expenses-and-income-monitoring-on-diagrams", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap techny_business_model_and_income_growth {
             get {
                 object obj = ResourceManager.GetObject("techny-business-model-and-income-growth", resourceCulture);

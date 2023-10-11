@@ -6,11 +6,18 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Globalization;
 using System.Data.SqlClient;
 using System.Data.Common;
-using System.Windows.Forms.DataVisualization.Charting;
+
+using System.Windows.Forms;
+
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+using OxyPlot.WindowsForms;
+using OxyPlot.Legends;
+using LiveCharts.Wpf;
 
 namespace LoginScreen
 {
@@ -18,6 +25,9 @@ namespace LoginScreen
     {
         private int currentUserId;
         private const string ConnectionString = "Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True";
+        private PlotModel? expensePlotModel;
+        private PlotModel? expenseTypePieModel;
+        private PlotModel? expensesBarModel;
 
         /// <summary>
         /// Conctructor - The userId is set to param for retrieve his expenses
@@ -27,6 +37,110 @@ namespace LoginScreen
         {
             InitializeComponent();
             currentUserId = userId;
+            InitializeExpensePlotModel();
+            InitializeExpenseTypePieModel();
+        }
+
+        /// <summary>
+        /// Initialize the plot for graph line 
+        /// </summary>
+        /// 
+        private void InitializeExpensePlotModel()
+        {
+            expensePlotModel = new PlotModel
+            {
+                Title = "Current Expenses Graph",
+                TitleColor = OxyColor.FromRgb(25, 25, 112)
+            };
+
+            // Add X-axis (time axis)
+            expensePlotModel.Axes.Add(new DateTimeAxis
+            {
+                Position = AxisPosition.Bottom,
+                StringFormat = "dd/MM/yyyy", // Format for displaying dates
+                Title = "Date",
+                IntervalType = OxyPlot.Axes.DateTimeIntervalType.Days,
+                IntervalLength = 200,
+            });
+
+            // Add Y-axis (amount axis)
+            expensePlotModel.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Title = "Amount",
+                Minimum = 0
+            });
+
+            // Add a LineSeries for the expenses
+            var expensesSeries = new OxyPlot.Series.LineSeries
+            {
+                Title = "Expenses",
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 4,
+                Color = OxyColors.Blue,
+                MarkerStroke = OxyColors.White,
+                MarkerFill = OxyColors.Blue,
+                StrokeThickness = 8,
+                LineStyle = LineStyle.Solid,
+                LineJoin = LineJoin.Round
+
+            };
+
+            // Add the series to the PlotModel
+            expensePlotModel.Series.Add(expensesSeries);
+
+            // Add a LineSeries for the total amount
+            var totalAmountSeries = new OxyPlot.Series.LineSeries
+            {
+                Title = "Total Amount",
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 4,
+                MarkerStroke = OxyColors.White,
+                Color = OxyColors.Red,
+                MarkerFill = OxyColors.Red,
+                StrokeThickness = 8,
+                LineStyle = LineStyle.Solid,
+                LineJoin = LineJoin.Round
+            };
+
+            // Add the total amount series to the PlotModel
+            expensePlotModel.Series.Add(totalAmountSeries);
+
+            // Set the PlotView to display the expensePlotModel
+            plotView1.Model = expensePlotModel;
+
+        }
+        /// <summary>
+        /// Initialize Pie Chart
+        /// </summary>
+        private void InitializeExpenseTypePieModel()
+        {
+            expenseTypePieModel = new PlotModel
+            {
+                Title = "Expenses by Type",
+                TitleColor = OxyColor.FromRgb(255, 255, 255),
+                DefaultColors = OxyPalettes.HueDistinct(8).Colors
+            };
+
+            // Add a PieSeries
+            var pieSeries = new OxyPlot.Series.PieSeries
+            {
+                StrokeThickness = 0.0,
+                InsideLabelPosition = 1.4,
+                AngleSpan = 360,
+                StartAngle = 0,
+                Diameter = 0.67
+            };
+
+            pieSeries.TextColor = OxyColors.MidnightBlue; // Set text color
+            pieSeries.InsideLabelColor = OxyColors.MidnightBlue; // Set label color
+            pieSeries.FontSize = 18; // Set font size for labels
+
+            // Add the series to the PlotModel
+            expenseTypePieModel.Series.Add(pieSeries);
+
+            // Set the PlotView to display the expenseTypePieModel
+            plotView2.Model = expenseTypePieModel;
         }
 
         /// <summary>
@@ -38,7 +152,72 @@ namespace LoginScreen
         {
             LoadExpenses();
         }
-        
+
+        /// <summary>
+        /// Update the plot
+        /// </summary>
+        /// <param name="dataTable"></param>
+        private void UpdateExpensePlot(DataTable dataTable)
+        {
+            if (expensePlotModel == null)
+            {
+                return;
+            }
+
+            var expensesSeries = (OxyPlot.Series.LineSeries)expensePlotModel.Series[0];
+            expensesSeries.Points.Clear();
+
+            var totalAmountSeries = (OxyPlot.Series.LineSeries)expensePlotModel.Series[1];
+            totalAmountSeries.Points.Clear();
+
+            double totalAmount = 0;
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                DateTime expenseDate = (DateTime)row["ExpenseDate"];
+                decimal amount = (decimal)row["Amount"];
+
+                expensesSeries.Points.Add(new OxyPlot.DataPoint(DateTimeAxis.ToDouble(expenseDate), Convert.ToDouble(amount)));
+
+                // Accumulate total amount
+                totalAmount += Convert.ToDouble(amount);
+
+                // Add total amount point to the series
+                totalAmountSeries.Points.Add(new OxyPlot.DataPoint(DateTimeAxis.ToDouble(expenseDate), totalAmount));
+            }
+
+
+
+            // Force the PlotModel to update
+            expensePlotModel.InvalidatePlot(true);
+        }
+
+        /// <summary>
+        /// Update pie chart
+        /// </summary>
+        /// <param name="dataTable"></param>
+        private void UpdateExpenseTypePieChart(DataTable dataTable)
+        {
+            if (expenseTypePieModel == null)
+            {
+                return;
+            }
+
+            var pieSeries = (OxyPlot.Series.PieSeries)expenseTypePieModel.Series[0];
+            pieSeries.Slices.Clear();
+
+            var expenseTypeGroups = dataTable.AsEnumerable().GroupBy(row => row.Field<string>("ExpenseType"));
+
+            foreach (var group in expenseTypeGroups)
+            {
+                decimal totalAmount = group.Sum(row => row.Field<decimal>("Amount"));
+                pieSeries.Slices.Add(new PieSlice(group.Key, Convert.ToDouble(totalAmount)));
+            }
+
+            // Force the PlotModel to update
+            expenseTypePieModel.InvalidatePlot(true);
+        }
+
         /// <summary>
         /// LoadExpenses Method Bind user's expenses from database and generate datagridView
         /// </summary>
@@ -52,9 +231,9 @@ namespace LoginScreen
 
                     string? filterValue = comboBoxFilter.SelectedItem?.ToString();
 
-                    string query = "SELECT ExpenseID, ExpenseType, Label, Amount, ExpenseDate, RegisterDate FROM Expenses WHERE UserID = @UserID";
+                    string query = "SELECT ExpenseID, ExpenseType, Label, Amount, ExpenseDate, RegisterDate FROM Expenses WHERE UserID = @UserID ORDER BY ExpenseDate";
 
-                    if (!string.IsNullOrEmpty(filterValue))
+                    if (!string.IsNullOrEmpty(filterValue) && filterValue != "All")
                     {
                         query += " AND ExpenseType = @ExpenseType";
                     }
@@ -116,6 +295,10 @@ namespace LoginScreen
                         // Set the data source after adding columns
                         dataGridView1.DataSource = dataTable;
 
+                        // Update the OxyPlot data series with expense data
+                        UpdateExpensePlot(dataTable);
+                        UpdateExpenseTypePieChart(dataTable);
+
                     }
                 }
             }
@@ -148,9 +331,18 @@ namespace LoginScreen
             //Check Date
             else if (DateTime.TryParseExact(expenseDateInput, dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime expenseDate))
             {
-                Console.WriteLine("Valid date: " + expenseDate.ToString("dd/MM/yyyy"));
-                InsertExpense(expenseType, label, amount, expenseDate);
-                LoadExpenses();
+                if (expenseType != "Select type...")
+                {
+                    Console.WriteLine("Valid date: " + expenseDate.ToString("dd/MM/yyyy"));
+                    InsertExpense(expenseType, label, amount, expenseDate);
+                    LoadExpenses();
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a valid expense type", "Invalid type", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
 
             }
             else
@@ -330,7 +522,10 @@ namespace LoginScreen
             }
         }
 
-        // Delete expense
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="expenseId"></param>
         private void DeleteExpense(int expenseId)
         {
             try
@@ -354,6 +549,16 @@ namespace LoginScreen
             {
                 MessageBox.Show($"Error deleting expense: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBoxFilter.Text = "All";
+
         }
     }
 }

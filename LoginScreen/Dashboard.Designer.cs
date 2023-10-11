@@ -42,6 +42,9 @@
             label6 = new Label();
             dataGridView1 = new DataGridView();
             tabPage2 = new TabPage();
+            plotView1 = new OxyPlot.WindowsForms.PlotView();
+            tabPage3 = new TabPage();
+            plotView2 = new OxyPlot.WindowsForms.PlotView();
             txtAmount = new TextBox();
             panel2 = new Panel();
             label3 = new Label();
@@ -54,9 +57,12 @@
             comboBoxType = new ComboBox();
             pictureBox2 = new PictureBox();
             buttonAdd = new Button();
+            sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            tabPage2.SuspendLayout();
+            tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
@@ -108,25 +114,30 @@
             // 
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
+            tabControl1.Controls.Add(tabPage3);
+            tabControl1.Font = new Font("Calibri Light", 11F, FontStyle.Regular, GraphicsUnit.Point);
             tabControl1.Location = new Point(278, 76);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(921, 558);
             tabControl1.TabIndex = 12;
+            tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
             // 
             // tabPage1
             // 
+            tabPage1.BackColor = Color.White;
             tabPage1.Controls.Add(panel5);
             tabPage1.Controls.Add(comboBoxFilter);
             tabPage1.Controls.Add(label6);
             tabPage1.Controls.Add(dataGridView1);
-            tabPage1.Location = new Point(4, 29);
+            tabPage1.Font = new Font("Calibri Light", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            tabPage1.ForeColor = Color.MidnightBlue;
+            tabPage1.Location = new Point(4, 31);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(913, 525);
+            tabPage1.Size = new Size(913, 523);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Overview";
-            tabPage1.UseVisualStyleBackColor = true;
             // 
             // panel5
             // 
@@ -142,12 +153,12 @@
             comboBoxFilter.FlatStyle = FlatStyle.Flat;
             comboBoxFilter.Font = new Font("Calibri", 10F, FontStyle.Regular, GraphicsUnit.Point);
             comboBoxFilter.FormattingEnabled = true;
-            comboBoxFilter.Items.AddRange(new object[] { "Daily expenses", "Home rent", "Fuel", "Health", "Outing", "Others" });
+            comboBoxFilter.Items.AddRange(new object[] { "All", "Daily expenses", "Home rent", "Fuel", "Health", "Outing", "Others" });
             comboBoxFilter.Location = new Point(748, 3);
             comboBoxFilter.Name = "comboBoxFilter";
             comboBoxFilter.Size = new Size(159, 29);
             comboBoxFilter.TabIndex = 27;
-            comboBoxFilter.Text = "Select type...";
+            comboBoxFilter.Text = "All";
             comboBoxFilter.SelectedValueChanged += comboBoxFilter_SelectedValueChanged;
             // 
             // label6
@@ -173,7 +184,7 @@
             dataGridView1.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = Color.MidnightBlue;
-            dataGridViewCellStyle1.Font = new Font("Calibri", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.Font = new Font("Calibri Light", 10F, FontStyle.Regular, GraphicsUnit.Point);
             dataGridViewCellStyle1.ForeColor = Color.White;
             dataGridViewCellStyle1.SelectionBackColor = Color.MidnightBlue;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
@@ -182,8 +193,8 @@
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.Font = new Font("Calibri Light", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = Color.MidnightBlue;
             dataGridViewCellStyle2.SelectionBackColor = Color.Transparent;
             dataGridViewCellStyle2.SelectionForeColor = Color.Navy;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
@@ -198,7 +209,7 @@
             dataGridView1.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.Navy;
-            dataGridViewCellStyle3.Font = new Font("Calibri", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle3.Font = new Font("Calibri Light", 10F, FontStyle.Regular, GraphicsUnit.Point);
             dataGridViewCellStyle3.ForeColor = Color.White;
             dataGridViewCellStyle3.SelectionBackColor = Color.Transparent;
             dataGridViewCellStyle3.SelectionForeColor = Color.Black;
@@ -222,13 +233,52 @@
             // 
             // tabPage2
             // 
-            tabPage2.Location = new Point(4, 29);
+            tabPage2.Controls.Add(plotView1);
+            tabPage2.Location = new Point(4, 31);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(913, 525);
+            tabPage2.Size = new Size(913, 523);
             tabPage2.TabIndex = 1;
-            tabPage2.Text = "Graph";
+            tabPage2.Text = "|Graph";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // plotView1
+            // 
+            plotView1.Dock = DockStyle.Fill;
+            plotView1.ForeColor = Color.MidnightBlue;
+            plotView1.Location = new Point(3, 3);
+            plotView1.Name = "plotView1";
+            plotView1.PanCursor = Cursors.Hand;
+            plotView1.Size = new Size(907, 517);
+            plotView1.TabIndex = 0;
+            plotView1.Text = "plotView1";
+            plotView1.ZoomHorizontalCursor = Cursors.SizeWE;
+            plotView1.ZoomRectangleCursor = Cursors.SizeNWSE;
+            plotView1.ZoomVerticalCursor = Cursors.SizeNS;
+            // 
+            // tabPage3
+            // 
+            tabPage3.Controls.Add(plotView2);
+            tabPage3.Location = new Point(4, 31);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Size = new Size(913, 523);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "|Expense by type";
+            tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // plotView2
+            // 
+            plotView2.BackColor = Color.White;
+            plotView2.Dock = DockStyle.Fill;
+            plotView2.Location = new Point(0, 0);
+            plotView2.Name = "plotView2";
+            plotView2.PanCursor = Cursors.Hand;
+            plotView2.Size = new Size(913, 523);
+            plotView2.TabIndex = 0;
+            plotView2.Text = "plotView2";
+            plotView2.ZoomHorizontalCursor = Cursors.SizeWE;
+            plotView2.ZoomRectangleCursor = Cursors.SizeNWSE;
+            plotView2.ZoomVerticalCursor = Cursors.SizeNS;
             // 
             // txtAmount
             // 
@@ -355,6 +405,13 @@
             buttonAdd.UseVisualStyleBackColor = false;
             buttonAdd.Click += buttonAdd_Click;
             // 
+            // sqlCommand1
+            // 
+            sqlCommand1.CommandTimeout = 30;
+            sqlCommand1.Connection = null;
+            sqlCommand1.Notification = null;
+            sqlCommand1.Transaction = null;
+            // 
             // Dashboard
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -389,6 +446,8 @@
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            tabPage2.ResumeLayout(false);
+            tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
@@ -422,5 +481,10 @@
         private ComboBox comboBoxFilter;
         private DataGridViewTextBoxColumn ExpenseType;
         private Button buttonAdd;
+        private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
+        private OxyPlot.WindowsForms.PlotView plotView1;
+        private TabPage tabPage3;
+        private OxyPlot.WindowsForms.PlotView plotView2;
+        private PictureBox pictureBox3;
     }
 }

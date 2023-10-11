@@ -138,7 +138,6 @@
             lblError.Name = "lblError";
             lblError.Size = new Size(270, 34);
             lblError.TabIndex = 8;
-            lblError.Text = "This is an error";
             lblError.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // txtUsername
@@ -165,7 +164,7 @@
             txtPassword.TabIndex = 10;
             txtPassword.UseSystemPasswordChar = true;
             // 
-            // Form1
+            // Login
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -184,7 +183,7 @@
             Controls.Add(pictureBox1);
             Cursor = Cursors.Hand;
             FormBorderStyle = FormBorderStyle.None;
-            Name = "Form1";
+            Name = "Login";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
