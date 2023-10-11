@@ -335,6 +335,11 @@ namespace LoginScreen
                 {
                     Console.WriteLine("Valid date: " + expenseDate.ToString("dd/MM/yyyy"));
                     InsertExpense(expenseType, label, amount, expenseDate);
+                    // Reset fields 
+                    txtDate.Text = "";
+                    txtAmount.Text = "";
+                    txtLabel.Text = "";
+                    comboBoxType.Text = "Select type...";
                     LoadExpenses();
                 }
                 else
