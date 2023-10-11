@@ -2,13 +2,15 @@ using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace LoginScreen
 {
     public partial class Login : Form
     {
         private int currentUserId = -1;
-        private const string ConnectionString = "Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True";
+        string? connectionString = GetConnectionString();
+        //private const string ConnectionString = "Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True";
 
         public Login()
         {
@@ -19,6 +21,29 @@ namespace LoginScreen
         private void pictureBox2_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        /// <summary>
+        /// Get the connection db string
+        /// </summary>
+        /// <returns></returns>
+        public static string? GetConnectionString()
+        {
+            try
+            {
+                return XDocument.Load("AppConfig.xml")?
+                    .Root?
+                    .Elements("add")
+                    .FirstOrDefault(e => e.Attribute("name")?.Value == "MyConnectionString")
+                    ?.Attribute("connectionString")
+                    ?.Value;
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception or log it
+                Console.WriteLine("Error reading connection string: " + ex.Message);
+                return null;
+            }
         }
 
 

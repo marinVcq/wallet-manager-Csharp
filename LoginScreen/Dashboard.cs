@@ -18,13 +18,16 @@ using OxyPlot.Series;
 using OxyPlot.WindowsForms;
 using OxyPlot.Legends;
 using LiveCharts.Wpf;
+using System.Xml.Linq;
+using Microsoft.Identity.Client;
 
 namespace LoginScreen
 {
     public partial class Dashboard : Form
     {
         private int currentUserId;
-        private const string ConnectionString = "Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True";
+        string? connectionString = GetConnectionString();
+        //private const string ConnectionString = "Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True";
         private PlotModel? expensePlotModel;
         private PlotModel? expenseTypePieModel;
         private PlotModel? expensesBarModel;
@@ -39,6 +42,28 @@ namespace LoginScreen
             currentUserId = userId;
             InitializeExpensePlotModel();
             InitializeExpenseTypePieModel();
+        }
+        /// <summary>
+        /// Get the connection db string
+        /// </summary>
+        /// <returns></returns>
+        public static string? GetConnectionString()
+        {
+            try
+            {
+                return XDocument.Load("AppConfig.xml")?
+                    .Root?
+                    .Elements("add")
+                    .FirstOrDefault(e => e.Attribute("name")?.Value == "MyConnectionString")
+                    ?.Attribute("connectionString")
+                    ?.Value;
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception or log it
+                Console.WriteLine("Error reading connection string: " + ex.Message);
+                return null;
+            }
         }
 
         /// <summary>

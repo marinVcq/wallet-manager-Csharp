@@ -9,12 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace LoginScreen
 {
     public partial class ModifyExpense : Form
     {
-        private const string ConnectionString = "Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True";
+        string? connectionString = GetConnectionString();
+        //private const string ConnectionString = "Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True";
 
         // Fields to store expense details
         private int expenseId;
@@ -39,6 +41,29 @@ namespace LoginScreen
             txtLabel.Text = label ?? string.Empty;
             txtAmount.Text = amount.ToString();
             txtDate.Text = expenseDate.ToString("dd/MM/yyyy");
+        }
+
+        /// <summary>
+        /// Get the connection db string
+        /// </summary>
+        /// <returns></returns>
+        public static string? GetConnectionString()
+        {
+            try
+            {
+                return XDocument.Load("AppConfig.xml")?
+                    .Root?
+                    .Elements("add")
+                    .FirstOrDefault(e => e.Attribute("name")?.Value == "MyConnectionString")
+                    ?.Attribute("connectionString")
+                    ?.Value;
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception or log it
+                Console.WriteLine("Error reading connection string: " + ex.Message);
+                return null;
+            }
         }
 
         private void ModifyExpense_Load(object sender, EventArgs e)
