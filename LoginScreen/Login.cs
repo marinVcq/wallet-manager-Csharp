@@ -5,12 +5,12 @@ using System.Windows.Forms;
 
 namespace LoginScreen
 {
-    public partial class Form1 : Form
+    public partial class Login : Form
     {
         private int currentUserId = -1;
         private const string ConnectionString = "Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True";
 
-        public Form1()
+        public Login()
         {
             InitializeComponent();
         }
@@ -45,7 +45,7 @@ namespace LoginScreen
                     currentUserId = userId;
 
                     // Open the main form or any other form in your application
-                    Form2 mainForm = new Form2(currentUserId);
+                    Dashboard mainForm = new Dashboard(currentUserId);
                     mainForm.Show();
 
                     this.Hide();  // Hide the login form

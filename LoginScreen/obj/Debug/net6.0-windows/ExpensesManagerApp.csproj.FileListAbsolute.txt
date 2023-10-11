@@ -1,0 +1,10 @@
+C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\ExpensesManagerApp.csproj.AssemblyReference.cache
+C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\LoginScreen.Dashboard.resources
+C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\LoginScreen.Login.resources
+C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\LoginScreen.ModifyExpense.resources
+C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\ExpensesManagerApp.Properties.Resources.resources
+C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\ExpensesManagerApp.csproj.GenerateResource.cache
+C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\ExpensesManagerApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\ExpensesManagerApp.AssemblyInfoInputs.cache
+C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\ExpensesManagerApp.AssemblyInfo.cs
+C:\Github\LoginScreen\LoginScreen\obj\Debug\net6.0-windows\ExpensesManagerApp.csproj.CoreCompileInputs.cache

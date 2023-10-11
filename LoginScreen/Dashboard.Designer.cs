@@ -1,6 +1,6 @@
 ﻿namespace LoginScreen
 {
-    partial class Form2
+    partial class Dashboard
     {
         /// <summary>
         /// Required designer variable.
@@ -52,8 +52,8 @@
             label5 = new Label();
             pictureBox1 = new PictureBox();
             comboBoxType = new ComboBox();
-            buttonAdd = new Button();
             pictureBox2 = new PictureBox();
+            buttonAdd = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -69,7 +69,7 @@
             label1.ForeColor = Color.White;
             label1.Location = new Point(0, 0);
             label1.Name = "label1";
-            label1.Size = new Size(1031, 59);
+            label1.Size = new Size(1211, 59);
             label1.TabIndex = 0;
             label1.Text = "Dashboard";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -111,7 +111,7 @@
             tabControl1.Location = new Point(278, 76);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(741, 558);
+            tabControl1.Size = new Size(921, 558);
             tabControl1.TabIndex = 12;
             // 
             // tabPage1
@@ -123,7 +123,7 @@
             tabPage1.Location = new Point(4, 29);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(733, 525);
+            tabPage1.Size = new Size(913, 525);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Overview";
             tabPage1.UseVisualStyleBackColor = true;
@@ -131,7 +131,7 @@
             // panel5
             // 
             panel5.BackColor = Color.DarkBlue;
-            panel5.Location = new Point(561, 36);
+            panel5.Location = new Point(747, 36);
             panel5.Name = "panel5";
             panel5.Size = new Size(160, 2);
             panel5.TabIndex = 21;
@@ -143,7 +143,7 @@
             comboBoxFilter.Font = new Font("Calibri", 10F, FontStyle.Regular, GraphicsUnit.Point);
             comboBoxFilter.FormattingEnabled = true;
             comboBoxFilter.Items.AddRange(new object[] { "Daily expenses", "Home rent", "Fuel", "Health", "Outing", "Others" });
-            comboBoxFilter.Location = new Point(562, 3);
+            comboBoxFilter.Location = new Point(748, 3);
             comboBoxFilter.Name = "comboBoxFilter";
             comboBoxFilter.Size = new Size(159, 29);
             comboBoxFilter.TabIndex = 27;
@@ -154,7 +154,7 @@
             // 
             label6.Font = new Font("Calibri", 13.8F, FontStyle.Regular, GraphicsUnit.Point);
             label6.ForeColor = Color.DarkBlue;
-            label6.Location = new Point(449, 3);
+            label6.Location = new Point(635, 3);
             label6.Name = "label6";
             label6.Size = new Size(116, 42);
             label6.TabIndex = 26;
@@ -213,16 +213,19 @@
             dataGridView1.ShowCellToolTips = false;
             dataGridView1.ShowEditingIcon = false;
             dataGridView1.ShowRowErrors = false;
-            dataGridView1.Size = new Size(727, 468);
+            dataGridView1.Size = new Size(904, 468);
             dataGridView1.TabIndex = 0;
             dataGridView1.TabStop = false;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            dataGridView1.CellFormatting += dataGridView1_CellFormatting;
+            dataGridView1.CellPainting += dataGridView1_CellPainting;
             // 
             // tabPage2
             // 
             tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(733, 525);
+            tabPage2.Size = new Size(913, 525);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Graph";
             tabPage2.UseVisualStyleBackColor = true;
@@ -328,6 +331,16 @@
             comboBoxType.TabIndex = 23;
             comboBoxType.Text = "Select type...";
             // 
+            // pictureBox2
+            // 
+            pictureBox2.Image = Properties.Resources.techny_business_model_and_income_growth;
+            pictureBox2.Location = new Point(0, 380);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(272, 270);
+            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox2.TabIndex = 25;
+            pictureBox2.TabStop = false;
+            // 
             // buttonAdd
             // 
             buttonAdd.BackColor = Color.MidnightBlue;
@@ -342,22 +355,12 @@
             buttonAdd.UseVisualStyleBackColor = false;
             buttonAdd.Click += buttonAdd_Click;
             // 
-            // pictureBox2
-            // 
-            pictureBox2.Image = Properties.Resources.techny_business_model_and_income_growth;
-            pictureBox2.Location = new Point(0, 380);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(272, 270);
-            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox2.TabIndex = 25;
-            pictureBox2.TabStop = false;
-            // 
-            // Form2
+            // Dashboard
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.LightBlue;
-            ClientSize = new Size(1031, 646);
+            ClientSize = new Size(1211, 646);
             Controls.Add(pictureBox2);
             Controls.Add(buttonAdd);
             Controls.Add(comboBoxType);
@@ -379,7 +382,7 @@
             FormBorderStyle = FormBorderStyle.Fixed3D;
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "Form2";
+            Name = "Dashboard";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Wallet Manager";
             Load += Form2_Load;
@@ -412,12 +415,12 @@
         private PictureBox pictureBox1;
         private ComboBox comboBoxType;
         private Button button1;
-        private Button buttonAdd;
         private DataGridView dataGridView1;
         private PictureBox pictureBox2;
         private Label label6;
         private Panel panel5;
         private ComboBox comboBoxFilter;
         private DataGridViewTextBoxColumn ExpenseType;
+        private Button buttonAdd;
     }
 }
