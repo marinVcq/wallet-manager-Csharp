@@ -5,6 +5,7 @@ This C# application is a student project developed during the second year of stu
 
 ## Table of Contents
 - [Introduction](#introduction)
+- [User Story](#user-story)
 - [Overview](#overview)
 	- [ScreenShot](#screenshot)
 	- [Features](#features)
@@ -13,9 +14,8 @@ This C# application is a student project developed during the second year of stu
   - [Installation](#installation)
   - [Usage](#usage)
 - [Documentation](#documentation)
-- [Contributing](#contributing)
+	- [Configure Database](#configure-database)
 - [License](#license)
-- [Acknowledgments](#acknowledgments)
 
 ## Introduction
 
@@ -30,6 +30,35 @@ understanding spending patterns, and making informed financial decisions.
 An Expense Manager provides a centralized platform for users to log their expenses systematically. 
 This includes categorizing expenses by type, adding labels, specifying amounts, and recording dates. 
 By doing so, users can easily track and understand their spending habits over time.
+
+## User Story
+
+
+**Name:** View Current Expenses 
+**Objectives:** View and modify current expenses online 
+**Actors:**
+-   **Primary:** Users
+-   **Secondary:** Database Precondition: Functional website, authentication
+
+**Main Scenario:**
+
+1.  The system displays a login page.
+2.  The user authenticates.
+3.  The system redirects the user to a new page containing a list of all recorded current expenses.
+4.  The user adds expenses.
+5.  The system records the new expenses.
+6.  The user searches for a type of expense.
+7.  The system displays the corresponding expense.
+8.  The user graphically views their current expenses.
+9.  The system displays a chart showing the distribution of each expense relative to the total.
+
+**Alternative Scenario #1:** 
+- 2.a The user authenticates incorrectly. 
+- 2.b The system signals the error and allows the user to try again. 2.c Return to step 1.
+
+**Alternative Scenario #2:**
+- 6.a The user makes a search that yields no results. 
+- 6.b The system indicates that no expense matches the query. 6.c Return to step 6.
 
 ## Overview
 ### ScreenShot
@@ -98,7 +127,7 @@ This Expense Manager application comes equipped with several features designed t
 - Implements confirmation prompts to prevent accidental deletion of expense records.
 - Ensures the integrity and security of financial data.
 
-##### 11. Educational Value
+#### 11. Educational Value
 
 - As a student project, it serves as an educational tool for learning C# programming, database integration, and graphical data visualization.
 
@@ -115,7 +144,7 @@ In summary, the Expense Manager application is feature-rich, providing users wit
 ### Installation
 1.  Clone the repository to your local machine.
 2.  Open the project in your preferred C# development environment (e.g., Visual Studio).
-3.  Run SQL Script on SQL Server & Configure database access in the solution.
+3.  Run the SQL Script 'création_script.sql' on SQL Server & Configure database in the solution.
 4.  Build and run the application.
 
 ### Usage
@@ -127,17 +156,35 @@ In summary, the Expense Manager application is feature-rich, providing users wit
 
 ## Documentation
 
-### Database Connection
+### Configure Database
 
 The application establishes a connection to a SQL Server database, you have to set your own database connection string in the AppConfig.xml file.
 
+1- **Find the name of your server on SQL Server Management**
+
+![enter image description here](https://i.imgur.com/8UBOYXv.png)
+
+2- **Connect server in solution** (view -> server Explorer)
+
+***Click on "connect to database"***
+
+![enter image description here](https://i.imgur.com/8yNqUO7.png)
+
+3- **Fill with your server name and select the expensesManager database**
+
+![enter image description here](https://i.imgur.com/NTk7giy.png)
+
+4- **Click OK**
+## **Important :** **Don't forget to set the connection string in 'AppConfig.xml'**
+
 ### Database Schema
 The database schema includes a table named `Expenses` with columns for `ExpenseID`, `ExpenseType`, `Label`, `Amount`, `ExpenseDate`, `RegisterDate`, and `UserID`.
-
-
 
 ### OxyPlot Integration
 
 Using OxyPlot as an alternative to the deprecated DataVisualization namespace in .NET. The DataVisualization namespace, which includes the Chart controls, has been deprecated in recent versions of .NET. OxyPlot is a popular open-source plotting library that you can use as an alternative to create charts and plots in your .NET applications.
 
     Install-Package OxyPlot.WindowsForms
+
+## License
+This project is licensed under the [MIT License](https://chat.openai.com/c/LICENSE).

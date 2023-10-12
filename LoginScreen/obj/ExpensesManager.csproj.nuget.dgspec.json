@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Github\\LoginScreen\\LoginScreen\\ExpensesManager.csproj": {}
+    "C:\\Github\\wallet-manager-Csharp\\LoginScreen\\ExpensesManager.csproj": {}
   },
   "projects": {
-    "C:\\Github\\LoginScreen\\LoginScreen\\ExpensesManager.csproj": {
+    "C:\\Github\\wallet-manager-Csharp\\LoginScreen\\ExpensesManager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Github\\LoginScreen\\LoginScreen\\ExpensesManager.csproj",
+        "projectUniqueName": "C:\\Github\\wallet-manager-Csharp\\LoginScreen\\ExpensesManager.csproj",
         "projectName": "ExpensesManager",
-        "projectPath": "C:\\Github\\LoginScreen\\LoginScreen\\ExpensesManager.csproj",
+        "projectPath": "C:\\Github\\wallet-manager-Csharp\\LoginScreen\\ExpensesManager.csproj",
         "packagesPath": "C:\\Users\\marin\\.nuget\\packages\\",
-        "outputPath": "C:\\Github\\LoginScreen\\LoginScreen\\obj\\",
+        "outputPath": "C:\\Github\\wallet-manager-Csharp\\LoginScreen\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
