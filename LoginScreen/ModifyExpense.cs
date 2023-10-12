@@ -11,12 +11,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace LoginScreen
+namespace ExpensesManager
 {
     public partial class ModifyExpense : Form
     {
-        string? connectionString = GetConnectionString();
-        //private const string ConnectionString = "Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True";
+        string? connectionString = ConfigurationManager.GetConnectionString();
 
         // Fields to store expense details
         private int expenseId;
@@ -25,6 +24,14 @@ namespace LoginScreen
         private decimal originalAmount;
         private DateTime originalExpenseDate;
 
+        /// <summary>
+        /// Constructor: get rows former params
+        /// </summary>
+        /// <param name="expenseId"></param>
+        /// <param name="expenseType"></param>
+        /// <param name="label"></param>
+        /// <param name="amount"></param>
+        /// <param name="expenseDate"></param>
         public ModifyExpense(int expenseId, string? expenseType, string? label, decimal amount, DateTime expenseDate)
         {
             InitializeComponent();
@@ -44,28 +51,10 @@ namespace LoginScreen
         }
 
         /// <summary>
-        /// Get the connection db string
+        /// Loader - not using yet
         /// </summary>
-        /// <returns></returns>
-        public static string? GetConnectionString()
-        {
-            try
-            {
-                return XDocument.Load("AppConfig.xml")?
-                    .Root?
-                    .Elements("add")
-                    .FirstOrDefault(e => e.Attribute("name")?.Value == "MyConnectionString")
-                    ?.Attribute("connectionString")
-                    ?.Value;
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception or log it
-                Console.WriteLine("Error reading connection string: " + ex.Message);
-                return null;
-            }
-        }
-
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ModifyExpense_Load(object sender, EventArgs e)
         {
 
@@ -124,9 +113,17 @@ namespace LoginScreen
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
+                    try
+                    {
+                        connection.Open();
+                        // Continue with database operations
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error opening connection: {ex.Message}");
+                    }
 
                     string query = "UPDATE Expenses SET ExpenseType = @ExpenseType, Label = @Label, Amount = @Amount, ExpenseDate = @ExpenseDate WHERE ExpenseID = @ExpenseID";
 

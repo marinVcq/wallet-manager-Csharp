@@ -1,4 +1,4 @@
-﻿namespace LoginScreen
+﻿namespace ExpensesManager
 {
     partial class Dashboard
     {
@@ -58,6 +58,8 @@
             pictureBox2 = new PictureBox();
             buttonAdd = new Button();
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
+            label7 = new Label();
+            label8 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -233,6 +235,8 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(label8);
+            tabPage2.Controls.Add(label7);
             tabPage2.Controls.Add(plotView1);
             tabPage2.Location = new Point(4, 31);
             tabPage2.Name = "tabPage2";
@@ -412,6 +416,28 @@
             sqlCommand1.Notification = null;
             sqlCommand1.Transaction = null;
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Calibri", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label7.ForeColor = Color.Red;
+            label7.Location = new Point(751, 8);
+            label7.Name = "label7";
+            label7.Size = new Size(133, 24);
+            label7.TabIndex = 1;
+            label7.Text = "Total Expenses";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Calibri", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label8.ForeColor = Color.MidnightBlue;
+            label8.Location = new Point(751, 32);
+            label8.Name = "label8";
+            label8.Size = new Size(156, 24);
+            label8.TabIndex = 2;
+            label8.Text = "Current Expenses";
+            // 
             // Dashboard
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -447,6 +473,7 @@
             tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             tabPage2.ResumeLayout(false);
+            tabPage2.PerformLayout();
             tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
@@ -473,18 +500,17 @@
         private Label label5;
         private PictureBox pictureBox1;
         private ComboBox comboBoxType;
-        private Button button1;
         private DataGridView dataGridView1;
         private PictureBox pictureBox2;
         private Label label6;
         private Panel panel5;
         private ComboBox comboBoxFilter;
-        private DataGridViewTextBoxColumn ExpenseType;
         private Button buttonAdd;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
         private OxyPlot.WindowsForms.PlotView plotView1;
         private TabPage tabPage3;
         private OxyPlot.WindowsForms.PlotView plotView2;
-        private PictureBox pictureBox3;
+        private Label label8;
+        private Label label7;
     }
 }

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <connectionStrings>
-	<add name="MyConnectionString" connectionString="Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True;" />
+	<add name="MyConnectionString" connectionString="Data Source=LAPTOP-JDHKJSTJ\SQLEXPRESS;Initial Catalog=expensesManager;Integrated Security=True" />
 </connectionStrings>
+
 

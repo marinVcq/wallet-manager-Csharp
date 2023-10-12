@@ -9,31 +9,26 @@ using System.Threading.Tasks;
 using System.Globalization;
 using System.Data.SqlClient;
 using System.Data.Common;
-
 using System.Windows.Forms;
-
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot.WindowsForms;
 using OxyPlot.Legends;
-using LiveCharts.Wpf;
 using System.Xml.Linq;
 using Microsoft.Identity.Client;
 
-namespace LoginScreen
+namespace ExpensesManager
 {
     public partial class Dashboard : Form
     {
         private int currentUserId;
-        string? connectionString = GetConnectionString();
-        //private const string ConnectionString = "Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True";
+        string? connectionString = ConfigurationManager.GetConnectionString();
         private PlotModel? expensePlotModel;
         private PlotModel? expenseTypePieModel;
-        private PlotModel? expensesBarModel;
 
         /// <summary>
-        /// Conctructor - The userId is set to param for retrieve his expenses
+        /// Conctructor - The userId is set to param to retrieve his expenses
         /// </summary>
         /// <param name="userId"></param>
         public Dashboard(int userId)
@@ -43,33 +38,20 @@ namespace LoginScreen
             InitializeExpensePlotModel();
             InitializeExpenseTypePieModel();
         }
+
         /// <summary>
-        /// Get the connection db string
+        /// Form Loader - Yet load the datagridView with Expense Overview
         /// </summary>
-        /// <returns></returns>
-        public static string? GetConnectionString()
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form2_Load(object sender, EventArgs e)
         {
-            try
-            {
-                return XDocument.Load("AppConfig.xml")?
-                    .Root?
-                    .Elements("add")
-                    .FirstOrDefault(e => e.Attribute("name")?.Value == "MyConnectionString")
-                    ?.Attribute("connectionString")
-                    ?.Value;
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception or log it
-                Console.WriteLine("Error reading connection string: " + ex.Message);
-                return null;
-            }
+            LoadExpenses();
         }
 
         /// <summary>
         /// Initialize the plot for graph line 
         /// </summary>
-        /// 
         private void InitializeExpensePlotModel()
         {
             expensePlotModel = new PlotModel
@@ -82,7 +64,7 @@ namespace LoginScreen
             expensePlotModel.Axes.Add(new DateTimeAxis
             {
                 Position = AxisPosition.Bottom,
-                StringFormat = "dd/MM/yyyy", // Format for displaying dates
+                StringFormat = "dd/MM/yyyy",
                 Title = "Date",
                 IntervalType = OxyPlot.Axes.DateTimeIntervalType.Days,
                 IntervalLength = 200,
@@ -108,7 +90,6 @@ namespace LoginScreen
                 StrokeThickness = 8,
                 LineStyle = LineStyle.Solid,
                 LineJoin = LineJoin.Round
-
             };
 
             // Add the series to the PlotModel
@@ -133,8 +114,8 @@ namespace LoginScreen
 
             // Set the PlotView to display the expensePlotModel
             plotView1.Model = expensePlotModel;
-
         }
+
         /// <summary>
         /// Initialize Pie Chart
         /// </summary>
@@ -151,31 +132,21 @@ namespace LoginScreen
             var pieSeries = new OxyPlot.Series.PieSeries
             {
                 StrokeThickness = 0.0,
-                InsideLabelPosition = 1.4,
+                InsideLabelPosition = 1.2,
                 AngleSpan = 360,
                 StartAngle = 0,
                 Diameter = 0.67
             };
 
-            pieSeries.TextColor = OxyColors.MidnightBlue; // Set text color
-            pieSeries.InsideLabelColor = OxyColors.MidnightBlue; // Set label color
-            pieSeries.FontSize = 18; // Set font size for labels
+            pieSeries.TextColor = OxyColors.MidnightBlue;
+            pieSeries.InsideLabelColor = OxyColors.MidnightBlue;
+            pieSeries.FontSize = 14;
 
             // Add the series to the PlotModel
             expenseTypePieModel.Series.Add(pieSeries);
 
             // Set the PlotView to display the expenseTypePieModel
             plotView2.Model = expenseTypePieModel;
-        }
-
-        /// <summary>
-        /// Form Loader - Yet load the datagridView with Expense Overview
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Form2_Load(object sender, EventArgs e)
-        {
-            LoadExpenses();
         }
 
         /// <summary>
@@ -211,8 +182,6 @@ namespace LoginScreen
                 totalAmountSeries.Points.Add(new OxyPlot.DataPoint(DateTimeAxis.ToDouble(expenseDate), totalAmount));
             }
 
-
-
             // Force the PlotModel to update
             expensePlotModel.InvalidatePlot(true);
         }
@@ -244,15 +213,22 @@ namespace LoginScreen
         }
 
         /// <summary>
-        /// LoadExpenses Method Bind user's expenses from database and generate datagridView
+        /// Core function of the dashboard: LoadExpenses Method Bind user's expenses from database and generate datagridView
         /// </summary>
         private void LoadExpenses()
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
+                    try
+                    {
+                        connection.Open();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error opening connection: {ex.Message}");
+                    }
 
                     string? filterValue = comboBoxFilter.SelectedItem?.ToString();
 
@@ -383,12 +359,18 @@ namespace LoginScreen
             }
         }
 
-        // Insert in db method
+        /// <summary>
+        /// Insert expense record in database
+        /// </summary>
+        /// <param name="expenseType"></param>
+        /// <param name="label"></param>
+        /// <param name="amount"></param>
+        /// <param name="expenseDate"></param>
         private void InsertExpense(string expenseType, string label, decimal amount, DateTime expenseDate)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
 
@@ -417,12 +399,21 @@ namespace LoginScreen
             }
         }
 
-        // User set a filter
+        /// <summary>
+        /// Useful: update records each time new filter is set 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void comboBoxFilter_SelectedValueChanged(object sender, EventArgs e)
         {
             LoadExpenses();
         }
 
+        /// <summary>
+        /// Cell Formating for column button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
@@ -448,6 +439,11 @@ namespace LoginScreen
             }
         }
 
+        /// <summary>
+        /// Cell painting for cell button (to handle the background color issue) - REFACT NEEDED 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
@@ -503,7 +499,11 @@ namespace LoginScreen
             }
         }
 
-        // Cell click 
+        /// <summary>
+        /// Handle cell click on cell button 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
@@ -553,14 +553,14 @@ namespace LoginScreen
         }
 
         /// <summary>
-        /// 
+        /// Delete expense record from database
         /// </summary>
         /// <param name="expenseId"></param>
         private void DeleteExpense(int expenseId)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
 
@@ -581,7 +581,7 @@ namespace LoginScreen
             }
         }
         /// <summary>
-        /// 
+        /// Useful: Reset filter on "All" at each tab change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

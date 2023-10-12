@@ -4,50 +4,36 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace LoginScreen
+namespace ExpensesManager
 {
     public partial class Login : Form
     {
         private int currentUserId = -1;
-        string? connectionString = GetConnectionString();
-        //private const string ConnectionString = "Data Source=LAPTOP-JDHKJSTJ\\SQLEXPRESS;Initial Catalog=walletManager;Integrated Security=True";
+        string? connectionString = ConfigurationManager.GetConnectionString();
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Login()
         {
             InitializeComponent();
         }
 
-        // Exit Button
+        /// <summary>
+        /// Close Login Form when user click on the top right corner cross button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pictureBox2_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
         /// <summary>
-        /// Get the connection db string
+        /// Trigger password and username validation check
         /// </summary>
-        /// <returns></returns>
-        public static string? GetConnectionString()
-        {
-            try
-            {
-                return XDocument.Load("AppConfig.xml")?
-                    .Root?
-                    .Elements("add")
-                    .FirstOrDefault(e => e.Attribute("name")?.Value == "MyConnectionString")
-                    ?.Attribute("connectionString")
-                    ?.Value;
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception or log it
-                Console.WriteLine("Error reading connection string: " + ex.Message);
-                return null;
-            }
-        }
-
-
-        // Login btn
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text;
@@ -70,7 +56,7 @@ namespace LoginScreen
                     // Authentication successful
                     currentUserId = userId;
 
-                    // Open the main form or any other form in your application
+                    // Open the main form (the dashboard)
                     Dashboard mainForm = new Dashboard(currentUserId);
                     mainForm.Show();
 
@@ -78,7 +64,7 @@ namespace LoginScreen
                 }
                 else
                 {
-                    lblError.Text = "incorrect id or password.";
+                    lblError.Text = "incorrect ID or password.";
                     txtUsername.Clear();
                     txtPassword.Clear();
                     txtUsername.Focus();
@@ -86,19 +72,34 @@ namespace LoginScreen
             }
         }
 
-        // Check credentials method
+        /// <summary>
+        /// Check if username exist in database and if password is correct
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns>
+        /// Return -1 if its failed or userID if its done
+        /// </returns>
         private int AuthenticateUser(string username, string password)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
+                try
+                {
+                    connection.Open();
+                    // Continue with database operations
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error opening connection: {ex.Message}");
+                }
 
                 string query = "SELECT UserID FROM Users WHERE Username = @Username AND Password = @Password";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Username", username);
-                    command.Parameters.AddWithValue("@Password", password); // Note: In a real application, use hashed passwords
+                    command.Parameters.AddWithValue("@Password", password); // Note: In a real application, we have to use hashed passwords
 
                     // ExecuteScalar returns the first column of the first row in the result set
                     object result = command.ExecuteScalar();
@@ -116,6 +117,5 @@ namespace LoginScreen
                 }
             }
         }
-
     }
 }

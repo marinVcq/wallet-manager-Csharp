@@ -1,4 +1,4 @@
-namespace LoginScreen
+namespace ExpensesManager
 {
     internal static class Program
     {

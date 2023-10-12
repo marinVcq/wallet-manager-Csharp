@@ -1,4 +1,4 @@
-﻿namespace LoginScreen
+﻿namespace ExpensesManager
 {
     partial class ModifyExpense
     {

@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Github\\LoginScreen\\LoginScreen\\ExpensesManager.csproj": {}
+    "C:\\Github\\LoginScreen\\LoginScreen\\App.csproj": {}
   },
   "projects": {
-    "C:\\Github\\LoginScreen\\LoginScreen\\ExpensesManager.csproj": {
+    "C:\\Github\\LoginScreen\\LoginScreen\\App.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Github\\LoginScreen\\LoginScreen\\ExpensesManager.csproj",
-        "projectName": "ExpensesManager",
-        "projectPath": "C:\\Github\\LoginScreen\\LoginScreen\\ExpensesManager.csproj",
+        "projectUniqueName": "C:\\Github\\LoginScreen\\LoginScreen\\App.csproj",
+        "projectName": "App",
+        "projectPath": "C:\\Github\\LoginScreen\\LoginScreen\\App.csproj",
         "packagesPath": "C:\\Users\\marin\\.nuget\\packages\\",
         "outputPath": "C:\\Github\\LoginScreen\\LoginScreen\\obj\\",
         "projectStyle": "PackageReference",
@@ -45,9 +45,21 @@
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "dependencies": {
-            "Microsoft.Data.SqlClient": {
+            "HIC.System.Windows.Forms.DataVisualization": {
               "target": "Package",
-              "version": "[3.0.0, )"
+              "version": "[1.0.1, )"
+            },
+            "LiveCharts": {
+              "target": "Package",
+              "version": "[0.9.7, )"
+            },
+            "LiveCharts.WinForms": {
+              "target": "Package",
+              "version": "[0.9.7.1, )"
+            },
+            "Microsoft.Windows.Compatibility": {
+              "target": "Package",
+              "version": "[7.0.5, )"
             },
             "OxyPlot.WindowsForms": {
               "target": "Package",
