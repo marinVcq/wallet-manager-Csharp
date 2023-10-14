@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpensesManagerV2", "ExpensesManagerV2.csproj", "{FE237469-DE81-48FD-927E-5FCBF48EB0EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{D3A8EED6-F9B9-4E94-B3D8-FC03640D176A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE237469-DE81-48FD-927E-5FCBF48EB0EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE237469-DE81-48FD-927E-5FCBF48EB0EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE237469-DE81-48FD-927E-5FCBF48EB0EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE237469-DE81-48FD-927E-5FCBF48EB0EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {86C3EC15-A975-4320-A307-05B02032F638}
+	EndGlobalSection
+EndGlobal
